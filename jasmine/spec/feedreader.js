@@ -58,7 +58,8 @@ $(function () {
      * hiding/showing of the menu element.
      */
     function isSlideMenuHidden() {
-      return $('.slide-menu').parents('.menu-hidden').length > 0;
+      return $('.menu-hidden .slide-menu').length > 0;
+      // return $('.slide-menu').parents('.menu-hidden').length > 0;
     }
 
     it('is hidden by default', function () {
@@ -72,11 +73,12 @@ $(function () {
      */
     it('changes visibility when the menu icon is clicked', function () {
       var $menuIcon = $('.menu-icon-link');
-      var initialState = isSlideMenuHidden();
+      // Hide slide menu
+      $('body').addClass('menu-hidden');
       $menuIcon.trigger('click');
-      expect(isSlideMenuHidden()).not.toBe(initialState);
+      expect(isSlideMenuHidden()).toBe(false);
       $menuIcon.trigger('click');
-      expect(isSlideMenuHidden()).toBe(initialState);
+      expect(isSlideMenuHidden()).toBe(true);
     });
 
   });
@@ -95,12 +97,11 @@ $(function () {
     });
 
     function isFeedContainerEmpty() {
-      return $('.feed').find('.entry').length === 0;
+      return $('.feed .entry').length === 0;
     }
 
-    it('have been loaded into the .feed container', function (done) {
+    it('have been loaded into the .feed container', function () {
       expect(isFeedContainerEmpty()).toBe(false);
-      done();
     });
   });
 
@@ -111,7 +112,7 @@ $(function () {
      * by the loadFeed function that the content actually changes.
      * Remember, loadFeed() is asynchronous.
      */
-    var $entriesOld, $entriesNew;
+    var $entriesOld;
     beforeEach(function (done) {
       loadFeed(0, function () {
         $entriesOld = $('.feed .entry');
@@ -119,14 +120,24 @@ $(function () {
       });
     });
 
+    // Equal in this context means, that they have the same elements
     function areJqueryObjectsEqual(obj1, obj2) {
-      return (obj1.length === obj2.length) &&
-        (obj1.lenght === obj1.filter(obj2).length);
+      if (obj1.length !== obj2.length) {
+        return false;
+      }
+      for (var i = 0; i < obj1.length; i++) {
+        if (obj1[i].innerHTML !== obj2[i].innerHTML) {
+          return false;
+        }
+      }
+      return true;
     }
-    it('changes the content', function (done) {
+
+    it('changes the content', function () {
       var $entriesNew = $('.feed .entry');
       expect(areJqueryObjectsEqual($entriesOld, $entriesNew)).toBe(false);
-      done();
+      // This one, tests that areJqueryObjectsEqual() works properly
+      // expect(areJqueryObjectsEqual($('.feed .entry'), $entriesNew)).toBe(true);
     });
   });
 }());
