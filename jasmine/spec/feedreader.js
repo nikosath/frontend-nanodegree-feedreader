@@ -72,16 +72,16 @@ $(function () {
     });
 
     it('changes visibility when the menu icon is clicked', function () {
-      var menuIcon = $('.menu-icon-link');
+      var $menuIcon = $('.menu-icon-link');
       if (isSlideMenuHidden() === true) {
-        menuIcon.trigger('click');
+        $menuIcon.trigger('click');
         expect(isSlideMenuHidden()).toBe(false);
       } else {
-        menuIcon.trigger('click');
+        $menuIcon.trigger('click');
         expect(isSlideMenuHidden()).toBe(true);
       }
       // Restore initial visibility state
-      menuIcon.trigger('click');
+      $menuIcon.trigger('click');
     });
 
   });
@@ -114,6 +114,20 @@ $(function () {
    * Remember, loadFeed() is asynchronous.
    */
   describe('New Feed Selection', function () {
-    
+    var $entries1 = $('.feed .entry');
+    beforeEach(function (done) {
+      loadFeed(1, done);
+    });
+
+    it('changes the content', function (done) {
+      function areJqueryObjectsEqual(obj1, obj2) {
+        return (obj1.length === obj2.length) &&
+          (obj1.lenght === obj1.filter(obj2).length);
+      }
+
+      var $entries2 = $('.feed .entry');
+      expect(areJqueryObjectsEqual($entries1, $entries2)).toBe(false);
+      done();
+    });
   });
 }());
