@@ -6,7 +6,7 @@ was instructed to write a few test suites with Jasmine.
 ## Usage
 
 You may visit `index.html` at the
-[github project page](http://www.nikosath.space/frontend-nanodegree-feedreader/).
+[github project page](http://www.nikosath.space/udacity-frontend-nanodegree-feedreader/).
 As an alternative, you could download/clone the repo files and open
 `index.html` in your favorite browser. The results of the tests can be seen if 
 you scroll at the very bottom of the page.
